@@ -1,0 +1,476 @@
+body{
+  background-color: #f1f7f98f; 
+  font-size: 15px;
+  color: #495057
+}
+
+.login {
+  height: 100vh;
+  display: flex;
+  background-image: url(img/fundo-login.png);
+  background-size: cover;
+  background-repeat : no-repeat;
+  font-size: 14px;
+}
+
+.carregando {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: text-bottom;
+  border: .25em solid #023490;
+  border-right-color: transparent;
+  border-radius: 50%;
+  -webkit-animation: spinner-border .75s linear infinite;
+  animation: spinner-border .75s linear infinite;
+}
+
+.btn-blue{
+  background-color: #023490;
+  color : #fff;
+}
+
+.btn-blue:hover{
+  background-color: #002770;
+  color : #fff;
+}
+
+.login .box{
+  display: flex;
+  flex-direction: column;
+  margin: 20vh auto;
+  align-items: center;
+}
+.login .card {
+  width: 350px;
+  border: none !important;
+}
+
+.login .card .card-body {
+  padding: 20px
+}
+
+.login .box .logo{
+  width: 100px;
+  margin-bottom: 50px;
+  border-radius: 5px;
+}
+
+.login .card .card-header{
+  font-size: 20px
+}
+
+.home .top-side {
+  background-image: linear-gradient( to bottom right, #023490, #00090e);
+}
+
+.home .top-side .top{
+  display: flex;
+  align-items: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.home .top-side .top button{
+  width: 100px;
+}
+
+.home .top-side .btn-perfil{
+  font-size: 12px;
+  background-color: transparent;
+  border-color: transparent;
+  color: #fff;
+}
+
+.home .top-side a.btn-perfil:hover{
+  color: #fff !important;
+}
+
+.home .top-side .btn-perfil i {
+  font-size: 25px;
+  color : #fff;
+  cursor: pointer;
+}
+
+.home .top-side .drop-menu {
+  left: -35px !important;
+  top: 10px !important;
+  font-size: 12px;
+}
+
+.home .top-side .drop-item {
+  width: 100% !important;
+}
+
+.home .top-side .drop-item i{
+  margin-right: 5px;
+}
+
+.home .top-side .logo{
+  width: 100px;
+}
+
+.home .top-side .navbar{
+  background-image: linear-gradient( #fff, #e6e6e6);
+  height: 45px;
+}
+
+.home .top-side .link-menu li {
+  font-weight: 600;
+  padding-right: 40px;
+  font-size: 15px;
+}
+
+.home .top-side .link-menu i {
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+
+.scheduler{
+  width: 500px !important;
+}
+
+.tui-full-calendar-layout{
+  margin-top : 20px;
+}
+
+.corpo h1{
+  font-size: 25px;
+}
+
+.espaco{
+  margin: 20px 0;
+}
+
+.tui-full-calendar-dayname-container{
+  overflow: none;
+}
+
+.tui-full-calendar-time-date-schedule-block-wrap{
+  margin: 0px !important;
+}
+
+.tui-view-36{
+  height: 70vh;
+}
+.page-title-box{
+  margin: 20px 0px
+}
+
+.page-title-box .page-title{
+  font-size: 20px;
+  font-weight: 600
+}
+
+.page-title-box .page-title-right{
+  float: right;
+}
+.breadcrumb-item+.breadcrumb-item::before {
+  content: ">";
+}
+
+.card .card-header{
+  padding: 10px 20px;
+  font-size: 15px;
+  background-color: #023490;
+  font-weight: 700;
+  color : rgb(246, 246, 246);
+}
+
+.table .thead-dark th{
+  background-color: #023490;
+  border-color: #023490;
+}
+.card .card-title{
+  font-size: 20px;
+  
+}
+
+.breadcrumb {
+  background-color: transparent;
+}
+
+.breadcrumb a{
+  color: #00090e
+}
+
+.lista-computador{
+  margin-top : 30px;
+}
+
+.lista-computador .item{
+  padding: 10px;
+  border: 1px solid #d6d6d6;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  background-color: #ccc;
+  color : #555;
+  margin-bottom: 20px;
+
+}
+
+.lista-computador .col-3 :hover{
+  background-color : #222;
+  color : #fff
+
+}
+.lista-computador .col-2 :hover{
+  background-color : #222;
+  color : #fff
+
+}
+
+.lista-computador a:hover{
+    color: transparent;
+    text-decoration: none !important;
+}
+
+.lista-computador .item i {
+  font-size: 80px;
+}
+
+.lista-computador .item span{
+  margin-top: 5px;
+  font-weight: 600;
+}
+
+.modal-content{
+  border: none;
+
+}
+
+.modal-content label{
+  font-weight: 600;
+}
+
+.modal-header {
+  background-color: #023490;
+  color: #fff;
+}
+
+.modal-header .close{
+  color: #fff;
+}
+
+
+.add-alerta .itens{
+  display: flex;
+  flex-direction: row;
+}
+
+.add-alerta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.add-alerta h3{
+  font-size: 25px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.add-alerta .itens .item{
+  padding: 25px;
+  background-color: #555;
+  border-radius: 5px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+}
+
+.add-alerta .itens .item:hover{
+  background-color: #222;
+}
+
+.add-alerta .itens .item{
+  text-align: center;
+}
+
+.add-alerta .itens .titulo{
+  font-size: 20px;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+.add-alerta .itens span{
+  font-size: 12px;
+}
+
+.add-alerta .itens .item i {
+  font-size: 40px;
+}
+
+.add-alerta .ajuda h1{
+  font-weight: 600;
+  font-size: 20px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.lista-lab .item{
+  background-color: #555;
+  padding: 20px;
+  border-color: 8px;
+}
+
+.data-alerta .react-datepicker-wrapper{
+  width: 100% !important;
+}
+
+.data-alerta .col-4{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.data-alerta .col-4 input{
+  margin-top: 0;
+}
+
+.status .cabecalho{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background-image: linear-gradient( to bottom right, #023490, #00090e);
+}
+
+.status .cabecalho img{
+  width: 150px;
+}
+
+.status .conteudo .titulo{
+  padding: 15px 0;
+}
+
+.status .conteudo .laboratorio .header {
+  padding: 5px;
+}
+
+.status .conteudo .laboratorio .header span {
+  color: #000;
+}
+
+.status .conteudo .fundo{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  background-color: #47ec6d;
+  border-radius: 5px
+}
+
+.status .conteudo .laboratorio i {
+  font-size: 70px;
+  color: #fff;
+}
+
+.status .conteudo .laboratorio .fundo span {
+  color: #fff;
+}
+
+.status .conteudo .laboratorio .proximas{
+
+}
+
+.status .conteudo .laboratorio .proximas h5{
+  font-size: 15px;
+  padding: 5px 0px;
+}
+
+.status .conteudo .laboratorio .proximas h5{
+  
+  font-size: 15px;
+  padding: 5px 0px;
+}
+
+.status .conteudo .laboratorio .proximas ul{
+  
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.status .conteudo .laboratorio .proximas li{
+  background-color: #47ec6d;
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px 0;
+}
+
+.avisos .col-11{
+  display: flex;
+  flex-direction: column;
+  
+}
+
+.avisos .col-1 i{
+  font-size: 40px;
+}
+
+.exibir-materias{
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+table.aviso .botoes span{
+  margin: 0px 5px;
+  cursor: pointer;
+}
+
+table.aviso .botoes{
+  display: flex;
+  align-items: center;
+}
+
+table.aviso .botoes span i{
+  font-size: 19px;
+  
+}
+
+.list-group.avisos a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.list-group.avisos a .lab {
+  font-weight: bold;
+}
+
+.react-datepicker-wrapper{
+  width: 100%;
+}
+
+.horario{
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  
+}
+
+.horario p {
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+  font-weight: bold;
+  color: #fff;
+}
+
+.row.horarios{
+    overflow: auto;
+    height: 40vh;
+}
