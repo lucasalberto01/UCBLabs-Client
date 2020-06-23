@@ -296,3 +296,20 @@
 [0430/184728.109:ERROR:crash_report_database_win.cc(469)] failed to stat report
 [0506/190456.844:ERROR:crash_report_database_win.cc(469)] failed to stat report
 [0506/190456.923:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0506/203128.616:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0506/203128.617:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0507/141828.205:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0507/141828.206:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0507/144751.753:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0507/144751.754:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0511/162751.981:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0511/162751.989:ERROR:crash_report_database_win.cc(469)] failed to stat report
+[0622/112354.969:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0622/140416.785:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0622/140525.334:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0622/140703.274:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0622/141037.984:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0622/145410.588:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0622/174254.215:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0622/190103.087:ERROR:crash_report_database_win.cc(428)] unexpected header
+[0623/112825.306:ERROR:crash_report_database_win.cc(428)] unexpected header

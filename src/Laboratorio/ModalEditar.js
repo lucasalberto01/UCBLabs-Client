@@ -15,7 +15,8 @@ class ModalEditar extends React.Component{
             descricao_editar : null,
             tipo_editar : null, 
             id_editar : null, 
-            load_editar : true
+            load_editar : true,
+            tipos : []
         }   
 
         
@@ -26,9 +27,10 @@ class ModalEditar extends React.Component{
             console.log(data)
             this.setState({tipos : data.tipos})
         })
+
     }
 
-    onDisplay(id_lab){
+    onDisplay = (id_lab) =>{
         this.setState({modal_editar : true, capacidade_editar : null, local_editar : null, descricao_editar : null, id_editar : id_lab, load_editar : true})
         getDadosLab(id_lab, (data) => {
             console.log(data);
@@ -39,7 +41,7 @@ class ModalEditar extends React.Component{
         })
     }
 
-    async apagar(){
+    apagar = async () =>{
         let confirmacao = await Swal.fire({
             title : 'Certeza ?',
             text : 'Tem certeza que quer excluir o laboratorio ' + this.state.local_editar + ' ?',
@@ -104,7 +106,7 @@ class ModalEditar extends React.Component{
 
     render(){
         return(
-            <Modal isOpen={this.state.modal_editar} toggle={() => this.setState({modal_editar : false})} className={this.props.className}>
+            <Modal isOpen={this.state.modal_editar} toggle={() => this.setState({modal_editar : false})} >
                 <ModalHeader toggle={() => this.setState({modal_editar : false})} >Editar Laboratorio</ModalHeader>
                 <ModalBody>
                     <div className="row">

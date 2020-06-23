@@ -14,42 +14,38 @@ class EditarReserva extends React.Component{
         super(props)
         this.state = {
             open : false,
-            dados : null,
-            disciplina : 'Livre'
+            id_reserva : 0,
+            id_lab : 0,
+            id_lab_horario : 0,
+            dia : null,
+            hora_inicio : null,
+            hora_fim : null,
+            materia : null
             
         }
     }
 
-    display = (data) =>{
-        data.data_inicio = moment(data.inicio).format('HH:mm')
-        data.data_fim = moment(data.fim).format('HH:mm')
-        data.dia = moment(data.inicio).format('DD/MM/YYYY')
-        this.setState({open : true, dados : data, disciplina : 'Livre'})
-        this.exibirPedido(data)
-    }
-
-    exibirPedido = (data) =>{
-        
-        if(data.id_reserva){
-            DadosReserva(data.id_reserva, (data) =>{
-                
-                this.setState({disciplina : data.dados[0].nome_disciplina})
-            })
-        }else{
-            //alert('Vazio')
-        }
+    display = (id_reserva, id_lab, id_lab_horario, dia, hora_inicio, hora_fim, materia) =>{
+        this.setState({
+            open : true, 
+            id_reserva,
+            id_lab,
+            id_lab_horario,
+            dia,
+            hora_inicio,
+            hora_fim,
+            materia
+        })
         
     }
 
     livre = () =>{
-        let { id_lab, id_lab_horario, inicio } = this.state.dados
-
-        let data_reserva = moment(inicio).format('YYYY-MM-DD');
+        let { id_lab, id_lab_horario, dia } = this.state
 
         let data = {
             id_lab, 
             id_lab_horario, 
-            data_reserva
+            data_reserva : dia
         }
 
         verificaReserva(data, (data)=>{
@@ -68,7 +64,7 @@ class EditarReserva extends React.Component{
                     id_disciplina : 1, 
                     id_pessoa : 1, 
                     id_lab_horario, 
-                    data_reserva, 
+                    data_reserva : dia, 
                     id_pedido : null
                 }
                 NovaReserva(data, (data)=>{
@@ -94,26 +90,30 @@ class EditarReserva extends React.Component{
         
     }
 
+    onTransferir = (id_reserva) =>{
+        this.props.onTransferir(id_reserva)
+        this.setState({open : false})
+    }
+
     render(){
         return(
             <>
-                <Modal style={{maxWidth : 700}} isOpen={this.state.open} toggle={() => this.setState({open : false})} >
+                <Modal isOpen={this.state.open} toggle={() => this.setState({open : false})} >
                     <ModalHeader toggle={() => this.setState({open : false})}>Informações</ModalHeader>
                     <ModalBody>
-                        {this.state.dados &&
-                            <div className="exibir-materias">
-                                <span><b>Disciplina: </b> {this.state.disciplina} </span>
-                                <span><b>Dia: </b> {this.state.dados.dia} </span>
-                                <span><b>Inicio: </b> {this.state.dados.data_fim} </span>
-                                <span><b>Fim: </b> {this.state.dados.data_fim} </span>
-                            </div>
-                        }
+                        
+                        <div className="exibir-materias">
+                            <span><b>Disciplina: </b> {this.state.materia === null ? 'Trancado' : this.state.materia} </span>
+                            <span><b>Dia: </b> {moment(this.state.dia).format("DD/MM/YYYY")} </span>
+                            <span><b>Inicio: </b> {this.state.hora_inicio} </span>
+                            <span><b>Fim: </b> {this.state.hora_fim} </span>
+                        </div>
+                        
                         
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="success" onClick={() => this.livre()}>Marcar como Tempo Livre</Button>
-                        <Button color="warning" onClick={() => null}>Transferir</Button>
-                        <Button color="primary" onClick={() => null}>Editar</Button>
+                        <Button disabled={this.state.materia !== null ? true : false} color="success" onClick={() => this.livre()}>Marcar como Tempo Livre</Button>
+                        <Button disabled={(this.state.materia === null || this.state.materia === "Livre" ) ? true : false} color="warning" onClick={() => this.onTransferir(this.state.id_reserva)}>Transferir</Button>
                         <Button color="secondary" onClick={() => this.setState({open : false})}>Cancelar</Button>
                     </ModalFooter>
                 </Modal>

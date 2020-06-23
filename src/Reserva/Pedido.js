@@ -22,6 +22,7 @@ class Pedido extends React.Component{
         super(props)
         this.state = {
             modal : false,
+            force : false,
             lista_lab : [],
             lista_diciplinas : [],
             horarios : [],
@@ -33,8 +34,8 @@ class Pedido extends React.Component{
         }
     }
 
-    display = ()=>{
-        this.setState({modal : true})
+    display = (force=false)=>{
+        this.setState({modal : true, force})
     }
 
     componentDidMount(){
@@ -166,16 +167,7 @@ class Pedido extends React.Component{
                                 <Col md={6}>
                                 <FormGroup>
                                     <Label>Data Reserva</Label>
-                                    <br/>
-                                    <DatePicker
-                                        locale="pt"
-                                        className={'form-control'}
-                                        placeholderText="Selecione uma data"
-                                        startDate={new Date()}
-                                        selected={this.state.data}
-                                        onChange={this.seleonarData}
-                                        dateFormat="dd/MM/yyyy"
-                                    />
+                                    <Input type="date" value={this.state.data} onChange={({target }) => this.setState({data : target.value})} />
                                 </FormGroup>
                                 </Col>
                             </Row>

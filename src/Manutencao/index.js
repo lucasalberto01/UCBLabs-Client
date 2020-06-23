@@ -4,19 +4,39 @@ import TopBar from './../Teamplate/TopBar'
 import ModalNova from './ModalNova'
 import ModalEditar from './ModalEditar'
 
+import moment from 'moment';
+import 'moment-timezone';
+import 'moment/locale/pt-br';
+
+import { socket, listarManutencao } from './../Service'
+
 class Manutencao extends React.Component{
     constructor(props){
         super(props)
         this.modal1 = React.createRef();
         this.modal2 = React.createRef();
+        this.state = {
+            manutencoes : []
+        }
+    }
+
+    componentDidMount(){
+        listarManutencao((data) =>{
+            console.log(data)
+            this.setState({manutencoes : data.manutencao})
+        })
+
+        socket.on('UpdateManutencao', (data) =>{
+            this.setState({manutencoes : data.manutencao})
+        })
     }
 
     novaManutenção = () =>{
         this.modal1.current.display();
     }
 
-    editarManutencao = (id) =>{
-        this.modal2.current.display();
+    editarManutencao = (local, nome, id_status, obs, id) =>{
+        this.modal2.current.display(local, nome, id_status, obs, id);
     }
 
     render(){
@@ -41,7 +61,7 @@ class Manutencao extends React.Component{
                 </div>
                 <div className="row">
                     <div className="col-12">
-                        <button className="btn btn-info" onClick={this.novaManutenção}><i className="icon-plus icons"></i> Nova Manutenção</button>
+                        <button className="btn btn-outline-primary" onClick={this.novaManutenção}><i className="icon-plus icons"></i> Nova Manutenção</button>
                     </div>
                     <div className="col-12" style={{marginTop: 15}}>
                         <table class="table">
@@ -56,18 +76,23 @@ class Manutencao extends React.Component{
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">LAB 1</th>
-                                    <td>Projetor</td>
-                                    <td>O projetor está apresentando um problema na lampada</td>
-                                    <td>Em andamento</td>
-                                    <td>22/09/2019 15:33</td>
-                                    <td style={{display : 'flex', justifyContent : 'center', cursor : 'pointer'}}>
-                                        <a onClick={() => this.editarManutencao(1)}>
-                                            <i className="icon-pencil icons"></i>
-                                        </a>
-                                    </td>
-                                </tr>                             
+                                {this.state.manutencoes.map((element, index) =>{
+                                    return(
+                                        <tr key={index} style={{backgroundColor : 'white'}}>
+                                            <th scope="row">{element.local}</th>
+                                            <td>{element.nome}</td>
+                                            <td>{element.obs}</td>
+                                            <td>{element.status}</td>
+                                            <td>{moment(element.data_entrada).format('DD/MM/YYYY HH:mm')}</td>
+                                            <td style={{display : 'flex', justifyContent : 'center', cursor : 'pointer'}}>
+                                                <span onClick={() => this.editarManutencao(element.local, element.nome, element.id_status, element.obs, element.id)}>
+                                                    <i className="icon-pencil icons"></i>
+                                                </span>
+                                            </td>
+                                            
+                                        </tr>
+                                    )
+                                })}                            
                             </tbody>
                         </table>
                     </div>

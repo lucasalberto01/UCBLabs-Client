@@ -1,17 +1,26 @@
 import Cookies from 'universal-cookie';
 import * as axios from 'axios'
 import io from 'socket.io-client'
+import { setConnectado, setDesconectado } from '../src/store/actions'
 
 const cookies = new Cookies();
-const URL = 'http://localhost:3333'
+//const URL = 'http://179.124.185.94:3333'
 //const URL = 'http://191.252.219.159:8080'
+const URL = 'http://localhost:3333'
 
 
 const socket = io(URL);
 
 socket.on('connect', function(data){
     console.log('Conectado id', socket.id)
+    setConnectado()
 })
+
+socket.on('disconnect', function(){
+    console.log('DESCONECTADO')
+    setDesconectado()
+})
+
 
 socket.on('StatusUpdata', function(data){
     console.log(data)
@@ -123,8 +132,28 @@ function listarReservas(data, callback){
     })
 }
 
+function listarReservasDate(data, callback){
+    axios.post(URL + '/reserva/lista/date', { data })
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
 function getDadosReserva(id_lab, callback){
     axios.post(URL + '/reserva/lab/' + id_lab)
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function editReserva(data, callback){
+    axios.post(URL + '/reserva/editar', {data })
     .then(function(response){
         callback(response.data)
     })
@@ -178,6 +207,16 @@ function apagarAlerta(id_lab, callback){
     })
 }
 
+function listarTipoAlerta(callback){
+    axios.post(URL + '/avisos/tipos/lista')
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
 function NovaReserva(data, callback){
     axios.post(URL + '/reserva/add', { data })
     .then(function(response){
@@ -191,6 +230,26 @@ function NovaReserva(data, callback){
 
 function ListarDiciplinas(callback){
     axios.post(URL + '/diciplina/listar')
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function editarDisciplinas(data, callback){
+    axios.post(URL + '/diciplina/editar', { data })
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function addDisciplina(data, callback){
+    axios.post(URL + '/diciplina/add', { data })
     .then(function(response){
         callback(response.data)
     })
@@ -281,6 +340,166 @@ function verificaReserva(data, callback){
     })
 }
 
+function listarEquipamentos(data, callback){
+    axios.post(URL + '/equipamentos/listar', { data })
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function addEquipamentos(data, callback){
+    axios.post(URL + '/equipamentos/add', { data })
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function editEquipamentos(data, callback){
+    axios.post(URL + '/equipamentos/edit/' + data.id, { data })
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function deleteEquipamentos(id, id_lab, callback){
+    axios.post(URL + '/equipamentos/apagar/' + id, { data : { id_lab } })
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function saveManutencao(data, callback){
+    axios.post(URL + '/manutencao/salvar', { data })
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function editarManutencao(data, callback){
+    axios.post(URL + '/manutencao/editar', { data })
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function listarManutencao(callback){
+    axios.post(URL + '/manutencao/listar')
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function saveTipoAviso(data, callback){
+    axios.post(URL + '/avisos/tipos/add', { data })
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function editarTipoAviso(data, callback){
+    axios.post(URL + '/avisos/tipos/editar', { data })
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function apagarTipoAviso(data, callback){
+    axios.post(URL + '/avisos/tipos/apagar', { data })
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+function ativarTipoAviso(data, callback){
+    axios.post(URL + '/avisos/tipos/ativar', { data })
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function listarStatusManutancao(callback){
+    axios.post(URL + '/manutencao/status/listar')
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function relatorioResumo(callback){
+    axios.post(URL + '/relatorio/resume')
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function graficoManutencao(callback){
+    axios.post(URL + '/relatorio/grafico/manutencao')
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function graficoAvisos(callback){
+    axios.post(URL + '/relatorio/grafico/avisos')
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function graficoPedidos(callback){
+    axios.post(URL + '/relatorio/grafico/pedidos')
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+
 export {
     socket,
     autenticado,
@@ -292,22 +511,43 @@ export {
     editarLab,
     apagarLab,
     listarReservas,
+    listarReservasDate,
     getDadosReserva,
     getDadosStatusReserva,
     NovaReserva,
     DadosReserva,
+    editReserva,
     tiposAlertas,
     salvarAlerta,
     listarAlertas,
     editarAlerta,
     apagarAlerta,
+    listarTipoAlerta,
     listarTiposLabs,
     ListarDiciplinas,
+    editarDisciplinas,
+    addDisciplina,
     ListarHorarios,
     NovoPedido,
     ListarPedidos,
     ListarTodosPedidos,
     ExibirDadosPedido,
     CancelarPedido,
-    verificaReserva
+    verificaReserva,
+    listarEquipamentos,
+    addEquipamentos,
+    editEquipamentos,
+    saveManutencao,
+    listarManutencao,
+    saveTipoAviso,
+    editarTipoAviso,
+    apagarTipoAviso,
+    ativarTipoAviso,
+    listarStatusManutancao,
+    editarManutencao,
+    deleteEquipamentos,
+    relatorioResumo,
+    graficoManutencao,
+    graficoAvisos,
+    graficoPedidos
 }

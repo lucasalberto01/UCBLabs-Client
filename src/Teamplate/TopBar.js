@@ -2,7 +2,7 @@ import React from 'react'
 import './../App.css'
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import logo from './../img/logo-login.png'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import { logout } from './../Service'
 
 class TopBar extends React.Component{
@@ -20,6 +20,10 @@ class TopBar extends React.Component{
           dropdownOpen: false,
           disabled_nav
         };
+
+        this.onLogout = this.onLogout.bind(this);
+        this.onPerfil = this.onPerfil.bind(this);
+        this.onConfig = this.onConfig.bind(this);
     }
 
     toggle() {
@@ -31,9 +35,17 @@ class TopBar extends React.Component{
     onLogout(){
         logout((data) =>{
             if(data){
-
+                this.props.history.push('/');
             }
         })
+    }
+
+    onPerfil(){
+        this.props.history.push('/perfil');
+    }
+
+    onConfig(){
+        this.props.history.push('/config');
     }
 
     render(){
@@ -52,7 +64,8 @@ class TopBar extends React.Component{
                                     </DropdownToggle>
                                     <DropdownMenu className="drop-menu">
                                         <DropdownItem className="drop-item" header>Nome</DropdownItem>
-                                        <DropdownItem className="drop-item" ><i className="icon-pencil icons" />Editar Conta</DropdownItem>
+                                        <DropdownItem className="drop-item" onClick={this.onPerfil} ><i className="icon-pencil icons" />Editar Conta</DropdownItem>
+                                        <DropdownItem className="drop-item" onClick={this.onConfig} ><i className="icon-settings icons" />Config. Gerais</DropdownItem>
                                         <DropdownItem divider />
                                         <DropdownItem className="drop-item" onClick={this.onLogout} ><i className="icon-logout icons" />Logout</DropdownItem>
                                     </DropdownMenu>
@@ -75,15 +88,15 @@ class TopBar extends React.Component{
                                         <Link className="nav-link" to="/avisos"><i className="icon-exclamation icons"></i>Avisos</Link>
                                     </li>
                                     <li className="nav-item">
-                                        <Link className="nav-link" to="/calendario"><i className="icon-calendar icons"></i>Calendario</Link>
-                                        
-                                    </li>
-                                    <li className="nav-item">
-                                    <Link className="nav-link" to="/laboratorios"><i className="icon-screen-desktop icons"></i>Laboratorios</Link>
+                                        <Link className="nav-link" to="/laboratorios"><i className="icon-screen-desktop icons"></i>Laboratorios</Link>
 
                                     </li>
                                     <li className="nav-item">
                                         <Link className="nav-link" to="/manutencao"><i className="icon-wrench icons"></i>Manutenção</Link>
+
+                                    </li>
+                                    <li className="nav-item">
+                                        <Link className="nav-link" to="/disciplina"><i className="icon-book-open icons"></i>Disciplinas</Link>
 
                                     </li>
                                     <li className="nav-item">
@@ -101,4 +114,4 @@ class TopBar extends React.Component{
 
 }
 
-export default TopBar
+export default withRouter(TopBar)

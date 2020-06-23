@@ -1,5 +1,5 @@
 body{
-  background-color: #f1f7f98f; 
+  background-color: #f3f3f38f; 
   font-size: 15px;
   color: #495057
 }
@@ -28,6 +28,10 @@ body{
 .btn-blue{
   background-color: #023490;
   color : #fff;
+}
+
+.bg-purple {
+  background-color: #6f42c1;
 }
 
 .btn-blue:hover{
@@ -176,6 +180,7 @@ body{
   background-color: #023490;
   font-weight: 700;
   color : rgb(246, 246, 246);
+  border-bottom: none !important;
 }
 
 .table .thead-dark th{
@@ -230,7 +235,7 @@ body{
 }
 
 .lista-computador .item i {
-  font-size: 80px;
+  font-size: 40px;
 }
 
 .lista-computador .item span{

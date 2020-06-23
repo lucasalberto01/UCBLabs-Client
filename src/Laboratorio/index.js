@@ -1,9 +1,10 @@
 import React from 'react'
-import TopBar from './../Teamplate/TopBar'
+import { Card, CardHeader, CardBody, Input, Label} from 'reactstrap';
+import TopBar from '../Teamplate/TopBar'
 
-import Calendario from './../Calendario/calendario'
+import { socket, listarReservas, getDadosLab, listarEquipamentos } from './../Service'
 import EditarReserva from './EditarReserva'
-import { socket,  listarReservas } from './../Service'
+import Transferir from './Transferir'
 
 import moment from 'moment';
 import 'moment-timezone';
@@ -12,129 +13,65 @@ import 'moment/locale/pt-br';
 class Laboratorio extends React.Component{
     constructor(props){
         super(props)
-        this.modal1 = React.createRef();
-        let id_lab = this.props.match.params.id
-        this.state = { reservas : [], id_lab : id_lab, modal : false, infoLab : {}}
-        this.toggle = this.toggle.bind(this);
-        this.sobreReserva = this.sobreReserva.bind(this)
-
-        
+        this.EditarReserva = React.createRef();
+        this.Transferir = React.createRef();
+        this.state = {
+            dia : moment().format('YYYY-MM-DD'),
+            id_lab : this.props.match.params.id,
+            dados : [],
+            lab_info : {},
+            lab_equipamentos : []
+        }
     }
 
-    toggle() {
-        this.setState(prevState => ({
-          modal: !prevState.modal
-        }));
-      }
-
     componentDidMount(){
-        this.loadReservas()
+        const id_lab = this.props.match.params.id;
 
         socket.on('AtualizacaoReservas', ()=>{
-            this.setState({reservas : []}, ()=>{
+            this.setState({dados : []}, ()=>{
                 this.loadReservas()
             })
             
         })
+
+        getDadosLab(id_lab, data =>{
+            this.setState({lab_info : data.informacoes})
+        })
+
+        listarEquipamentos({ id_lab }, data =>{
+            this.setState({lab_equipamentos : data })
+        })
+
+        this.loadReservas()
+    }
+
+    onChanger = ({target}) =>{
+        let dia = target.value 
+        this.setState({dados : [], dia }, ()=>{
+            this.loadReservas()
+        })
+
     }
 
     loadReservas = () =>{
-
-        let dias = []
-    
-        for(let i = 0; i <= 6; i++ ){
-            let date = moment().day(i);
-            dias.push(moment(date).format('YYYY-MM-DD'))
-        }
-
-        dias.forEach(element =>{
-            this.loadData(element);
-        })
-        
-    }
-
-    loadData = (dia) =>{
-        let data = {
-            id_lab : this.state.id_lab,
+        let { id_lab, dia} = this.state
+        let payload = {
+            id_lab,
             data : dia
         }
-        console.log('Dados', data)
-        listarReservas(data , (data)=>{
-            console.log('Reservas' , data)
-            let saida = []
-            let data_ = null;
 
-            data.dados.forEach(element => {
-                let push = null;
-                if(true){
-                    if(data_ === null){
-                        console.log(element.data_reserva);
-                        data_ = dia
-                    }
-                    
-                    if(element.materia === null){
-                        push = {
-                            raw : { id_lab_horario : element.id_lab_horario, id_reserva : element.id_reserva  },
-                            title: 'Trancado',
-                            bgColor : '#f3f8ff',
-                            category: 'time',
-                            dueDateClass: '',
-                            start: data_ + ' ' + element.hora_inicio,
-                            end: data_ + ' ' + element.hora_fim,
-                            isReadOnly: true
-                        }
-                    }else{
-                        push = {
-                            raw : { id_lab_horario : element.id_lab_horario, id_reserva : element.id_reserva },
-                            bgColor : element.color,
-                            title: element.materia,
-                            category: 'time',
-                            dueDateClass: '',
-                            start: data_ + ' ' + element.hora_inicio,
-                            end: data_ + ' ' + element.hora_fim,
-                            isReadOnly: true
-                            
-                        }
-
-                    }
-
-                    saida.push(push)
-                }
-
-
-            });
-            //console.log('Saida', this.state.reservas)
-            this.setState({reservas : [...this.state.reservas, ...saida]})
-        })
-
+        listarReservas(payload , (data)=>{
+            console.log(data)
+            this.setState({dados : data.dados})
+        });
     }
 
-
-    sobreReserva = (item) =>{
-        let { id_lab } = this.state
-        let { raw } = item.schedule
-        //console.log(item.schedule.start.getTime())
-        //console.log(item.schedule.end.getTime())
-        let a = item.schedule.start.getTime()
-        let b = item.schedule.end.getTime()
-        
-        //this.setState({infoLab : { titulo, hora_inicio, hora_fim} })
-        console.log(item.schedule)
-        let dados = {
-            inicio : moment(a).format(),
-            fim : moment(b).format(),
-            id_lab,
-            id_lab_horario : raw.id_lab_horario,
-            id_reserva : raw.id_reserva
-        }
-        this.clickReserva(dados);
-        
-        
-
+    onEdit = (id_reserva, id_lab, id_lab_horario, dia, hora_inicio, hora_fim, materia) =>{
+        this.EditarReserva.current.display(id_reserva, id_lab, id_lab_horario, dia, hora_inicio, hora_fim, materia);
     }
 
-    clickReserva = (dados) =>{
-        this.modal1.current.display(dados);
+    onTransferir = (id_reserva) =>{
+        this.Transferir.current.onDisplay(id_reserva)
     }
 
     render(){
@@ -157,18 +94,83 @@ class Laboratorio extends React.Component{
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-12">
-                            {this.state.reservas.length > 0 &&
-                                <Calendario click={(item) => {this.sobreReserva(item)} } reservas={this.state.reservas} />
-                            }
+                        <div className="col-8">
+                            <Card>
+                                <CardHeader>Reservas</CardHeader>
+                                <CardBody>
+                                    <Label>Selecione um dia para carregar as aulas</Label>
+                                    <Input value={this.state.dia} onChange={this.onChanger} type="date"/>
+                            
+                                    {this.state.dados.length > 0 &&
+                                        <div className="mt-4 bg-white rounded">
+                                            <h4 className="border-bottom border-gray pb-2 mb-0">Aulas - {moment(this.state.dia, 'YYYY-MM-DD').format('DD/MM/YYYY')}</h4>
+                                            <div className="row">
+                                            {this.state.dados.map((element, index) =>(
+                                                <div className="media text-muted pt-3 col-4" key={index}>
+                                                    <svg className="bd-placeholder-img mr-2 rounded" width={32} height={32} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill={element.color === null ? "#CCC" : element.color} /><text x="50%" y="50%" fill={element.color === null ? "#CCC" : element.color} dy=".3em">32x32</text></svg>
+
+                                                    <div className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                                                        <div className="d-flex justify-content-between align-items-center w-100">
+                                                        <strong className="text-gray-dark">{element.hora_inicio} - {element.hora_fim}</strong>
+                                                            <a
+                                                                href="#" 
+                                                                onClick={() => this.onEdit(element.id_reserva, element.id_lab, element.id_lab_horario, this.state.dia, element.hora_inicio, element.hora_fim, element.materia)} 
+                                                            >Editar</a>
+                                                        </div>
+                                                        <span className="d-block"> {element.materia === null ? 'Trancada' : element.materia }</span>
+                                                    </div>
+                                                </div> 
+                                            ))}
+                                            </div>
+                                                                                
+                                        </div>
+                                    }
+                                    
+
+                                </CardBody>                      
+                            </Card>
                             
                         </div>
+                        <div className="col-4">
+                            <Card>
+                                <CardHeader>Informações</CardHeader>
+                                <CardBody>
+                                    <div>
+                                        <div style={{display : 'flex', justifyContent : 'space-between', alignItems : 'center'}}>
+                                            <h3>{this.state.lab_info.local}</h3>
+                                            
+                                        </div>
+                                        
+                                        <span>Capacidade : {this.state.lab_info.capacidade}</span><br/>
+                                        <span>{this.state.lab_info.lab_tipo_nome}</span><br/>
+                                        <small  className="text-muted font-10">{this.state.lab_info.lab_tipo_descricao}</small><br/><br/>
+                                        <span>Descrição: </span><br/>
+                                        <small>{this.state.lab_info.descricao}</small>
+                                    </div>
+                                    <br/>
+                                    <div style={{display : 'flex', justifyContent : 'space-between', alignItems : 'center'}}>
+                                        <h5>Equipamentos Disponiveis:</h5>
+                                       
+                                    </div>
+                                    
+                                    {this.state.lab_equipamentos.map((element, key) =>(
+                                        <div key={key} style={{display : 'flex', backgroundColor : '#313131', padding : 8, justifyContent : 'space-between', borderRadius : 3, marginBottom : 5}}>
+                                            <span style={{color : '#eee'}}>{element.nome}</span>
+                                            
+                                        </div>
+                                    ))}
+                                </CardBody>
+                            </Card>
+
+                        </div>
                     </div>
-                        <EditarReserva ref={this.modal1} />
+                        
                 </div>
+                <EditarReserva onTransferir={this.onTransferir} ref={this.EditarReserva} />
+                <Transferir ref={this.Transferir} />
             </div>
         )
     }
 }
 
-export default Laboratorio;
+export default Laboratorio

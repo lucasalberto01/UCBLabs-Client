@@ -23,16 +23,16 @@ class ModalAdicionar extends React.Component{
         })
     }
 
-    onDisplay(){
+    onDisplay = () =>{
         this.setState({modal : true})
     }
 
-    envio(e){
+    envio = (e) => {
         e.preventDefault();
 
         let { local, capacidade, descricao } = this.state
 
-        if(local !== null, capacidade !== null, descricao !== null){
+        if(local !== null && capacidade !== null && descricao !== null){
             let data = {
                 local,
                 capacidade,
@@ -56,7 +56,11 @@ class ModalAdicionar extends React.Component{
             
 
         }else{
-            console.log('teste2')
+            Swal.fire({
+                title : 'Opss',
+                text : 'Preencha todos os campos',
+                type : 'error'
+            })
         }
     }
 
@@ -69,11 +73,11 @@ class ModalAdicionar extends React.Component{
                         <div className="col-12">
                             <Form onSubmit={this.envio}>
                                     <FormGroup>
-                                        <Label for="exampleEmail">Local</Label>
+                                        <Label >Local</Label>
                                         <Input onChange={({target}) => this.setState({ local : target.value} )} required type="text" placeholder="Ex.: LAB 01" />
                                     </FormGroup>
                                     <FormGroup>
-                                        <Label for="exampleEmail">Capacidade</Label>
+                                        <Label >Capacidade</Label>
                                         <Input onChange={({target}) => this.setState({ capacidade : target.value} )} required type="number" placeholder="Ex.: 30" />
                                     </FormGroup>
                                     <FormGroup>
@@ -82,8 +86,6 @@ class ModalAdicionar extends React.Component{
                                             {this.state.tipos.map(element =>{
                                                 return(<option>{element.nome}</option>)
                                             })}
-                                            
-                                            
                                         </Input>
                                     </FormGroup>
                                     <FormGroup>

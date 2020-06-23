@@ -8,17 +8,25 @@ import 'moment-timezone';
 import 'moment/locale/pt-br';
 
 import AceitarPedido from './AceitarPedido'
+import Pedido from './NovaReserva'
+import { connect } from 'react-redux'
 
 class Home extends React.Component{
     constructor(props){
         super(props);
+        
         this.modal1 = React.createRef();
+        this.Pedido = React.createRef();
+
         this.state = {
             ListaLabs : [],
             ListaAvisos : [],
             ListaPedidos : [],
-            load : true
+            load : true,
+            status : this.props.status
         }
+
+
 
     }
 
@@ -77,16 +85,12 @@ class Home extends React.Component{
         })
     }
 
-    handleClickDayname = (ev) => {
-        // view : week, day
-        console.group('onClickDayname');
-        console.log(ev.date);
-        console.groupEnd();
-    };
-
-
     clickPedido = (id_pedido) =>{
         this.modal1.current.display(id_pedido);
+    }
+
+    onAdd = () =>{
+        this.Pedido.current.display(true)
     }
 
     render(){       
@@ -107,22 +111,47 @@ class Home extends React.Component{
                                 <h4 className="page-title">Dashboard</h4>
                             </div>
                         </div>
-
                     </div>
+                    <div className="row mb-3 ml-0 mr-0 text-white-50 bg-purple rounded shadow-sm">
+                        <div className="col-3 d-flex align-items-center">
+                            <i className="mdi mdi-cloud-outline mdi-36px ml-2 mr-2" style={{color : '#fff'}} />
+                            <div className="lh-100">
+                                <h6 className="mb-0 text-white lh-100">Status</h6>
+                                <small>Status das conexões</small>
+                            </div>
+                        </div>
+                        <div className="col-3 d-flex align-items-center text-white">
+                            <span> <i  className="mdi mdi-circle" /> OS Inventury <span class="badge badge-dark p-1">Sem conexão</span> </span> 
+                        </div>
+                        <div className="col-3 d-flex align-items-center text-white">
+                            <span> <i  className="mdi mdi-circle" /> UCB Sistema <span class="badge badge-dark p-1">Sem conexão</span> </span> 
+                        </div>
+                        <div className="col-3 d-flex align-items-center text-white">
+                            <span> <i  className="mdi mdi-circle" /> UCB Labs <span class={ "badge " + this.props.color + " p-1" }>{this.props.status}</span> </span> 
+                        </div>
+                    </div>
+
                     <div className="row">
                         <div className="col-8">
                             <div className="card shadow ">
-                                <h5 className="card-header">Laboratorios</h5>
+                                <h5 className="card-header">
+                                    <a href="#" onClick={() => this.onAdd()} className="float-right text-white">
+                                        <i className="icon-plus icons"></i>
+                                    </a>
+                                    Reservas
+                                </h5>
                                 <div className="card-body">
+                                    <p>Selecione um Laboratorio para ver as reservas</p>
+
                                     {this.state.ListaLabs.length > 0 &&
                                         <div className="row lista-computador">
                                             {this.state.ListaLabs.map( (elemento, index) => (
-                                                    <div key={index.toString()} className="col-3">
-                                                        <Link className="item shadow" to={'/laboratorio/' + elemento.id_lab}>
-                                                            <i className="icon-screen-desktop icons"></i>
-                                                            <span>{elemento.local}</span>
-                                                        </Link>
-                                                    </div>
+                                                <div key={index.toString()} className="col-2">
+                                                    <Link className="item shadow" to={'/laboratorio/' + elemento.id_lab}>
+                                                        <i className="icon-screen-desktop icons"></i>
+                                                        <span>{elemento.local}</span>
+                                                    </Link>
+                                                </div>
                                             ))}
                                             
                                         </div>
@@ -166,15 +195,20 @@ class Home extends React.Component{
                                     }
 
                                     {this.state.ListaAvisos.length > 0 && 
-                                        <div class="list-group avisos">
-                                            {this.state.ListaAvisos.map(elemento => {
-                                                return(
-                                                    <a href="#" className="list-group-item list-group-item-action " style={{backgroundColor : elemento.color}}>
-                                                        <span className="lab">{elemento.local}</span>
-                                                        <span>{elemento.mensagem}</span>
-                                                    </a>
-                                                )
-                                            })}
+
+                                        <div className="list-group avisos">
+                                            {this.state.ListaAvisos.map((elemento, index) => (
+                                                <div className="media text-muted pb-3">
+                                                    <svg className="bd-placeholder-img mr-2 rounded" width={32} height={32} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill={elemento.color} /><text x="50%" y="50%" fill={elemento.color} dy=".3em">32x32</text></svg>
+                                                    <p className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                                                        <span className="d-block text-gray-dark">
+                                                            <a href="#" class="float-right">Ver</a>
+                                                            <b>{elemento.local}</b>
+                                                        </span>
+                                                        {elemento.mensagem}
+                                                    </p>
+                                                </div>
+                                            ))}
                                         </div>
                                     }
                                     
@@ -184,9 +218,14 @@ class Home extends React.Component{
                     </div>
                 </div>
                 <AceitarPedido ref={this.modal1} />
+                <Pedido ref={this.Pedido} />
             </div>
         )
     }
 }
 
-export default Home;
+function mapStateToProps(states){
+    return { status : states.status, color : states.color}
+}
+
+export default connect(mapStateToProps)(Home);
