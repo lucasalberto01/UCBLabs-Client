@@ -3,6 +3,7 @@ import { Card, CardHeader, CardBody, Input, Label} from 'reactstrap';
 import TopBar from '../Teamplate/TopBar'
 
 import { socket, listarReservas, getDadosLab, listarEquipamentos } from './../Service'
+
 import EditarReserva from './EditarReserva'
 import Transferir from './Transferir'
 

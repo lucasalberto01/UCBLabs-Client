@@ -43,8 +43,11 @@ class Pedido extends React.Component{
         this.loadHorarios();
 
         ListarDiciplinas(function(data){
-            console.log(data)
-            this.setState({lista_diciplinas : data.diciplinas})
+            var lista_diciplinas = data.diciplinas
+            lista_diciplinas = lista_diciplinas.filter((element) =>{
+                return element.id_disciplina !== 1
+            })
+            this.setState({lista_diciplinas})
         }.bind(this))
     }
 
@@ -148,8 +151,7 @@ class Pedido extends React.Component{
             >
               <ModalHeader toggle={()=>this.setState({modal : false})}>Nova Reserva</ModalHeader>
               <ModalBody>
-                <div className="row">
-                    <div className="col-12">
+              
                     <Form onSubmit={this.envio}>
                         <Row form>
                             <Col md={6}>
@@ -167,7 +169,7 @@ class Pedido extends React.Component{
                                 <Col md={6}>
                                 <FormGroup>
                                     <Label>Data Reserva</Label>
-                                    <Input type="date" value={this.state.data} onChange={({target }) => this.setState({data : target.value})} />
+                                    <Input min={moment().add({day : +1}).format('YYYY-MM-DD')} type="date" value={this.state.data} onChange={({target }) => this.setState({data : target.value})} />
                                 </FormGroup>
                                 </Col>
                             </Row>
@@ -219,11 +221,10 @@ class Pedido extends React.Component{
                             <Input onChange={({target}) => {this.setState({observacao : target.value})}} type="textarea" />
                         </FormGroup>
                         <FormGroup>
-                            <button type="submit" class="btn btn-block btn-info">Continuar</button>
+                            <button type="submit" class="btn btn-block btn-success">Enviar Perdido</button>
                         </FormGroup>
                     </Form>
-                    </div>
-                </div>
+                    
               </ModalBody>
               
             </Modal>

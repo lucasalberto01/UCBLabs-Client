@@ -65,7 +65,6 @@ class TopBar extends React.Component{
                                     <DropdownMenu className="drop-menu">
                                         <DropdownItem className="drop-item" header>Nome</DropdownItem>
                                         <DropdownItem className="drop-item" onClick={this.onPerfil} ><i className="icon-pencil icons" />Editar Conta</DropdownItem>
-                                        <DropdownItem className="drop-item" onClick={this.onConfig} ><i className="icon-settings icons" />Config. Gerais</DropdownItem>
                                         <DropdownItem divider />
                                         <DropdownItem className="drop-item" onClick={this.onLogout} ><i className="icon-logout icons" />Logout</DropdownItem>
                                     </DropdownMenu>

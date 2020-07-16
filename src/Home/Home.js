@@ -121,7 +121,7 @@ class Home extends React.Component{
                             </div>
                         </div>
                         <div className="col-3 d-flex align-items-center text-white">
-                            <span> <i  className="mdi mdi-circle" /> OS Inventury <span class="badge badge-dark p-1">Sem conexão</span> </span> 
+                            <span> <i  className="mdi mdi-circle" /> OS Inventory <span class="badge badge-dark p-1">Sem conexão</span> </span> 
                         </div>
                         <div className="col-3 d-flex align-items-center text-white">
                             <span> <i  className="mdi mdi-circle" /> UCB Sistema <span class="badge badge-dark p-1">Sem conexão</span> </span> 
@@ -166,18 +166,28 @@ class Home extends React.Component{
                          </div>
                          <div className="col-4">
                             <div className="card shadow ">
-                                <h5 className="card-header">Ultimos perdidos</h5>
+                                <h5 className="card-header">Ultimos pedidos</h5>
                                 <div className="card-body" style={{padding : 0}}>
-                                    
-                                    {this.state.ListaPedidos.map(element =>{
-                                        return(
-                                            <a key={element.id_pedido} onClick={() => { if(element.status === 'em andamento'){this.clickPedido(element.id_pedido)} } } className="list-group-item list-group-item-action " style={{backgroundColor : element.fundo, cursor : 'pointer'}}>
-                                                <p style={{margin : 0}}>Pedido dia <b>{element.data}</b> as <b>{element.hora_inicio}</b> da diciplina <b>{element.nome_disciplina}</b></p>
-                                                <p style={{margin : 0}}>Status : {element.status}</p>
-                                            </a>
-                                        )
-                                    })}
 
+                                    {this.state.ListaPedidos.length > 0 && 
+
+                                        <div className="p-3">
+                                            {this.state.ListaPedidos.map((elemento, index) => (
+                                                <div className="media text-muted pb-1" key={index}>
+                                                    <svg className="bd-placeholder-img mr-2 rounded" width={32} height={55} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill="#343a40" /><text x="50%" y="50%" fill="#343a40" dy=".3em">32x32</text></svg>
+                                                    <p className="media-body pb-1 mb-0 small lh-125 border-bottom border-gray">
+                                                        <span className="d-block text-gray-dark">
+                                                            <a href="#" class="float-right" onClick={() => { if(elemento.status === 'em andamento'){this.clickPedido(elemento.id_pedido)} } }>Ver</a>
+                                                            <b className="text-uppercase"> {elemento.status}</b>
+                                                        </span>
+                                                        Pedido dia <b>{elemento.data}</b> as <b>{elemento.hora_inicio}</b><br/>Diciplina : <b>{elemento.nome_disciplina}</b>
+                                                    
+                                                    </p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    }
+                    
                                     {this.state.ListaPedidos.length === 0 &&
                                         <div style={{padding : '1.25rem'}}>
                                             <p className="card-text">Nenhum pedido pendente :)</p>

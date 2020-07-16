@@ -72,7 +72,7 @@ class Disciplina extends React.Component{
                                 <CardHeader>Disciplinas</CardHeader>
                                 <CardBody>
                                     <div className="bg-white">
-                                        <h6 className="border-bottom border-gray pb-2 mb-0">Todas as disciplinas cadastradas</h6>
+                                        <h5 className="border-bottom pb-2 mb-0 text-muted">Todas as disciplinas cadastradas</h5>
                                         {this.state.lista.map(element =>(
                                             <div className="media text-muted pt-3">
                                                 <svg className="bd-placeholder-img mr-2 rounded" width={32} height={32} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill={element.color} /><text x="50%" y="50%" fill={element.color} dy=".3em">32x32</text></svg>

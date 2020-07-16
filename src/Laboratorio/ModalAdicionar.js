@@ -12,6 +12,7 @@ class ModalAdicionar extends React.Component{
             local : null, 
             capacidade : null, 
             descricao : null,
+            id_lab_tipo : 0,
             tipos : []
         }
     }
@@ -30,13 +31,14 @@ class ModalAdicionar extends React.Component{
     envio = (e) => {
         e.preventDefault();
 
-        let { local, capacidade, descricao } = this.state
+        let { local, capacidade, descricao, id_lab_tipo } = this.state
 
-        if(local !== null && capacidade !== null && descricao !== null){
+        if(local !== null && capacidade !== null && descricao !== null && id_lab_tipo !== 0){
             let data = {
                 local,
                 capacidade,
-                descricao
+                descricao,
+                id_lab_tipo
             }
             
             novoLab(data, function(data){
@@ -46,7 +48,7 @@ class ModalAdicionar extends React.Component{
                     this.props.loadLabs()
 
                     Swal.fire({
-                        type: 'success',
+                        icon: 'success',
                         title: 'Prontinho',
                         text: 'Laboratorio adicionado com sucesso!'
                     })
@@ -59,7 +61,7 @@ class ModalAdicionar extends React.Component{
             Swal.fire({
                 title : 'Opss',
                 text : 'Preencha todos os campos',
-                type : 'error'
+                icon : 'error'
             })
         }
     }
@@ -82,9 +84,10 @@ class ModalAdicionar extends React.Component{
                                     </FormGroup>
                                     <FormGroup>
                                         <Label for="exampleSelect">Tipo</Label>
-                                        <Input type="select" name="select" id="exampleSelect">
+                                        <Input defaultValue={this.state.id_lab_tipo} type="select" onChange={({target}) => this.setState({id_lab_tipo : parseInt(target.value)})}>
+                                            <option value={0}>Selecione um tipo</option>
                                             {this.state.tipos.map(element =>{
-                                                return(<option>{element.nome}</option>)
+                                                return(<option value={element.id_lab_tipo}>{element.nome}</option>)
                                             })}
                                         </Input>
                                     </FormGroup>

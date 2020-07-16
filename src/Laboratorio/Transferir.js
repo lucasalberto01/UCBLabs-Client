@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, FormText, Label, Input } from 'reactstrap';
 
-import { DadosReserva, listaLabs, listarReservas, editReserva, tiposAlertas } from './../Service'
+import { DadosReserva, listaLabs, listarReservas, editReserva, tiposAlertas, salvarAlerta } from './../Service'
 import Swal from 'sweetalert2';
 
 import moment from 'moment';
@@ -22,6 +22,7 @@ class Transferir extends React.Component{
 
             msg_alerta : '',
 
+            alerta : false,
             tipoAlerta : 0,
             listaTipos : []
         }
@@ -71,7 +72,7 @@ class Transferir extends React.Component{
     onSave = (e) =>{
         e.preventDefault()
 
-        let { dados, id_lab, id_lab_horario, date} = this.state
+        let { dados, id_lab, id_lab_horario, date, alerta, msg_alerta, tipoAlerta} = this.state
 
         let payload = {
             id_reserva : dados.id_reserva,
@@ -89,8 +90,25 @@ class Transferir extends React.Component{
             return;
         }
 
-        let text = "Tem certeza que deseja transferir a aula do dia " + moment(this.state.dados.data_reserva).format('DD/MM/YYYY') + " para o dia " + moment(date).format('DD/MM/YYYY') + " ?\n"
+        if(alerta){
+            let payload = {
+                id_aviso : tipoAlerta,
+                id_reserva : dados.id_reserva,
+                id_lab : id_lab,
+                id_pessoa : 1,
+                mensagem : msg_alerta,
+                data_final : null,
+                indefinido : true,
+                sobre : 'reserva'
+            }
+    
+            salvarAlerta(payload, (data) => {
+                console.log(data)
+            })
+        }
 
+        let text = "Tem certeza que deseja transferir a aula do dia " + moment(this.state.dados.data_reserva).format('DD/MM/YYYY') + " para o dia " + moment(date).format('DD/MM/YYYY') + " ?\n"
+        
         Swal.fire({
             title : "Tem certeza ?",
             text,
@@ -154,7 +172,7 @@ class Transferir extends React.Component{
                                     <Input defaultValue={this.state.id_lab} type="select" onChange={({target}) => this.setState({ id_lab : parseInt(target.value)} )} >
                                             <option value="0">Selecione um Laboratorio</option>
                                         {this.state.labs.map((element, index) =>(
-                                            <option key={index} value={element.id_lab} >{element.local} ({element.nome}) </option>
+                                            <option key={index} value={element.id_lab} >{element.local} ({element.lab_tipo_nome}) </option>
                                         ))}
                                     </Input>
                                     <FormText color="muted">
@@ -188,26 +206,31 @@ class Transferir extends React.Component{
                                 </FormGroup>
                                 <FormGroup check className="mb-2">
                                     <Label check>
-                                    <Input type="checkbox" />
+                                    <Input type="checkbox" checked={this.state.alerta} onChange={({target}) => this.setState({ alerta : target.checked})} />
                                             Gerar um aviso automatico
                                     </Label>
                                 </FormGroup>
-                                <FormGroup>
-                                    <Label>Uma pequena descrição do que aconteceu para colocar no aviso</Label>
-                                    <Input value={this.state.msg_alerta} type="textarea" />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label>Tipo de aviso</Label>
-                                    <Input type="select" defaultValue={this.state.tipoAlerta} onChange={({target}) => this.setState({ tipoAlerta : target.value} )}>
-                                        {this.state.listaTipos.map(element => {
-                                            return (
-                                                <option value={element.id_aviso}>
-                                                    {element.tipo}
-                                                </option>
-                                            )
-                                        })}
-                                    </Input>
-                                </FormGroup>
+                                {this.state.alerta && 
+                                <>
+                                    <FormGroup>
+                                        <Label>Uma pequena descrição do que aconteceu para colocar no aviso</Label>
+                                        <Input value={this.state.msg_alerta} onChange={({target}) => this.setState({msg_alerta : target.value})} type="textarea" />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label>Tipo de aviso</Label>
+                                        <Input type="select" defaultValue={this.state.tipoAlerta} onChange={({target}) => this.setState({ tipoAlerta : target.value} )}>
+                                            {this.state.listaTipos.map(element => {
+                                                return (
+                                                    <option value={element.id_aviso}>
+                                                        {element.tipo}
+                                                    </option>
+                                                )
+                                            })}
+                                        </Input>
+                                    </FormGroup>
+                                </>
+                                }
+                               
                                 <FormGroup>
                                     <div className="float-right">
                                         <Button color="dark" onClick={() => this.setState({open : false})} >Cancelar</Button>

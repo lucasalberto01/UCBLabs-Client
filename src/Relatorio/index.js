@@ -1,9 +1,11 @@
 import React from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
-import TopBar from './../Teamplate/TopBar'
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
+import TopBar from './../Teamplate/TopBar'
 import { relatorioResumo, graficoManutencao, graficoAvisos, graficoPedidos } from '../Service'
-import { Card, CardHeader, CardBody } from 'reactstrap';
+import { Card, CardHeader, CardBody, Button } from 'reactstrap';
 
 class Relatorio extends React.Component{
     constructor(props){
@@ -13,7 +15,8 @@ class Relatorio extends React.Component{
             resumo : null,
             grafico_manutencao : null,
             grafico_avisos : null,
-            grafico_pedidos : null
+            grafico_pedidos : null,
+            width : window.innerWidth < 1280 ? (window.innerWidth * 0.38) : 500
         }
     }
 
@@ -38,28 +41,34 @@ class Relatorio extends React.Component{
         })
     }
 
+    printDocument() {
+        window.print();
+        return;
+      }
+
     render(){
         
         return(
             <div className="home">
                 <TopBar />
 
-                <div className="container corpo">
+                <div className="container corpo " id="divToPrint">
                     <div className="row">
                         <div className="col-12">
                             <div className="page-title-box">
                                 <div className="page-title-right">
-                                    
+                                    <button className="btn btn-outline-primary btn-print" onClick={this.printDocument}>Imprimir</button>
                                 </div>
                                 <h4 className="page-title">Relatorios</h4>
                             </div>
                         </div>
                     </div>
+                    
                     <div className="row">
                         {this.state.resumo !== null &&
                             <>
                             <div className="col-3">
-                                <div className="card tilebox-one shadow ">
+                                <div className="card tilebox-one ">
                                     <div className="card-body">
                                         <i className="mdi mdi-book mdi-48px float-right" />
                                         <h6 className="text-uppercase mt-0">Total de Disciplinas</h6>
@@ -68,7 +77,7 @@ class Relatorio extends React.Component{
                                 </div>
                             </div>
                             <div className="col-3">
-                                <div className="card tilebox-one shadow ">
+                                <div className="card tilebox-one ">
                                     <div className="card-body">
                                         <i className="mdi mdi-file-table-box mdi-48px float-right" />
                                         <h6 className="text-uppercase mt-0">Total de Equipamentos</h6>
@@ -77,7 +86,7 @@ class Relatorio extends React.Component{
                                 </div>
                             </div>
                             <div className="col-3">
-                                <div className="card tilebox-one shadow ">
+                                <div className="card tilebox-one ">
                                     <div className="card-body">
                                         <i className="mdi mdi-cog-box mdi-48px float-right" />
                                         <h6 className="text-uppercase mt-0">Total de Manutenções</h6>
@@ -86,7 +95,7 @@ class Relatorio extends React.Component{
                                 </div>
                             </div>
                             <div className="col-3">
-                                <div className="card tilebox-one shadow ">
+                                <div className="card tilebox-one ">
                                     <div className="card-body">
                                         <i className="mdi mdi-chat-alert mdi-48px float-right" />
                                         <h6 className="text-uppercase mt-0">Total de Pedidos Realizado</h6>
@@ -100,11 +109,11 @@ class Relatorio extends React.Component{
                     </div>
                     <div className="row mt-4">
                         <div className="col-6">
-                            <Card className="shadow">
+                            <Card className="">
                                 <CardHeader>Manutenções ao longo do tempo</CardHeader>
                                 <CardBody>
                                     <LineChart
-                                        width={window.innerWidth *0.38}
+                                        width={this.state.width}
                                         height={250}
                                         data={this.state.grafico_manutencao}
                                     >
@@ -120,11 +129,11 @@ class Relatorio extends React.Component{
                             
                         </div>
                         <div className="col-6">
-                            <Card className="shadow">
+                            <Card className="">
                                 <CardHeader>Criação de avisos ao longo do tempo</CardHeader>
                                 <CardBody>
                                     <LineChart
-                                        width={window.innerWidth *0.38}
+                                        width={this.state.width}
                                         height={250}
                                         data={this.state.grafico_avisos}
                                     >
@@ -142,11 +151,11 @@ class Relatorio extends React.Component{
                     </div>
                     <div className="row mt-4">
                         <div className="col-12">
-                            <Card className="shadow">
+                            <Card className="">
                                 <CardHeader>Pedidos Realizados</CardHeader>
                                 <CardBody>
                                     <LineChart
-                                        width={window.innerWidth *0.8}
+                                        width={this.state.width * 2}
                                         height={250}
                                         data={this.state.grafico_pedidos}
                                     >
@@ -162,6 +171,7 @@ class Relatorio extends React.Component{
                             
                         </div>
                     </div>
+                    
                 </div>
             </div>
         )

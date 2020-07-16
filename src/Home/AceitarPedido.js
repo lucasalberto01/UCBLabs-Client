@@ -33,7 +33,7 @@ class AceitarPedido extends React.Component{
 
     componentDidMount(){
         listaLabs((data) => {
-            console.log(data);
+            console.log('LABSS >> ', data);
             this.setState({lista_lab : data.Laboratorios})
         })
 
@@ -149,7 +149,7 @@ class AceitarPedido extends React.Component{
                     Swal.fire({
                         title : 'Pronto',
                         text : 'Reserva feita com sucesso',
-                        type : 'success'
+                        icon : 'success'
                     })
                     this.setState({open  : false, open2 : false})
                 }else{
@@ -163,7 +163,7 @@ class AceitarPedido extends React.Component{
             Swal.fire({
                 title : 'Opss',
                 text : 'Preencha todos os campos',
-                type : 'error'
+                icon : 'error'
             })
         }
     }
@@ -222,11 +222,11 @@ class AceitarPedido extends React.Component{
                             <Row form>
                                 <Col md={6}>
                                     <FormGroup>
-                                        <Label for="exampleSelect">Selecione o Laboratorio (Esperado {this.state.dados.nome})  </Label>
+                                        <Label for="exampleSelect">Selecione o Laboratorio (Esperado : {this.state.dados.nome})  </Label>
                                         <Input type="select" onChange={({target}) => {this.setState({ id_lab : target.value}, () => this.loadHorarios());} }>
                                             <option value={this.state.id_lab}>Selecione um Laboratorio</option>
                                             {this.state.lista_lab.map((elemento) => (
-                                                <option value={elemento.id_lab}>{elemento.local} ({elemento.nome})</option>
+                                                <option value={elemento.id_lab}>{elemento.local} ({elemento.lab_tipo_nome})</option>
                                             ))}
                                             
                                         </Input>

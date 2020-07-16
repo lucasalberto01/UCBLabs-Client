@@ -7,6 +7,8 @@ import ModalAdicionar from './ModalAdicionar'
 import AddEquipamento from '../Conf/Equipamento/ModalAdd'
 import EditEquipamento from '../Conf/Equipamento/ModalEdit'
 
+import TipoLab from './Tipos'
+
 import { listaLabs, getDadosLab, listarEquipamentos, socket } from './../Service'
 
 class ListaLaboratorio extends React.Component{
@@ -25,6 +27,7 @@ class ListaLaboratorio extends React.Component{
         this.ref_modal_adicionar = React.createRef();
         this.ref_modal_equipamento = React.createRef();
         this.ref_modal_equipamento_edit = React.createRef();
+        this.ref_modal_tipo_lab = React.createRef();
     }
 
     componentDidMount(){
@@ -66,6 +69,10 @@ class ListaLaboratorio extends React.Component{
 
     novo = () =>{
         this.ref_modal_adicionar.current.onDisplay()
+    }
+
+    tipoLabEditar = () =>{
+        this.ref_modal_tipo_lab.current.onDisplay()
     }
 
     addEquipamento = () =>{
@@ -116,8 +123,9 @@ class ListaLaboratorio extends React.Component{
                         </div>
                     </div>
                     <div className="row mb-2">
-                        <div className="col-sm-4">
-                            <button onClick={this.novo} type="button" className="btn btn-outline-primary mb-3"><i className="icon-plus icons"></i> Novo Laboratorio</button>
+                        <div className="col-12">
+                            <button onClick={this.novo} type="button" className="btn btn-outline-primary mb-3 mr-3"><i className="icon-plus icons"></i> Novo Laboratorio</button>
+                            <button onClick={this.tipoLabEditar} type="button" className="btn btn-outline-primary mb-3"><i className="icon-plus icons"></i> Tipos de Laboratorios</button>
                         </div>
                     </div>
                     <div className="row">
@@ -206,6 +214,8 @@ class ListaLaboratorio extends React.Component{
                     <ModalEditar ref={this.ref_modal_editar} loadLabs={() => this.loadLabs()} />
                     <AddEquipamento ref={this.ref_modal_equipamento} />
                     <EditEquipamento ref={this.ref_modal_equipamento_edit} />
+
+                    <TipoLab ref={this.ref_modal_tipo_lab} />
                    
                 </div>
             </div>

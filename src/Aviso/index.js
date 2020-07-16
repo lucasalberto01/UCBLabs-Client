@@ -18,6 +18,8 @@ import EditReserva from './EditReserva'
 import ModalAdd from '../Conf/Msg/ModalAdd'
 import ModalEdit from '../Conf/Msg/ModalEdit'
 
+import ModalTodos from './ModalTodos'
+
 class Avisos extends React.Component{
     constructor(props){
         super(props)
@@ -28,11 +30,14 @@ class Avisos extends React.Component{
 
         this.NovoLab = React.createRef();
         this.EditLab = React.createRef();
+
         this.EditReserva = React.createRef();
         this.NovoReserva = React.createRef();
 
         this.ModalAdd = React.createRef();
         this.ModalEdit = React.createRef();
+
+        this.ModalTodos = React.createRef();
     }
 
     componentWillMount(){
@@ -93,6 +98,10 @@ class Avisos extends React.Component{
         this.ModalEdit.current.onDisplay(id, icone, tipo, cor, ativo)
     }
 
+    onModalTodos = () =>{
+        this.ModalTodos.current.onDisplay()
+    }
+
     render(){
         return(
             <div className="home">
@@ -144,7 +153,7 @@ class Avisos extends React.Component{
                                     }
 
                                     <small className="d-block text-right mt-3">
-                                        <a href="#">Mostra todos os avisos</a>
+                                        <a href="#" onClick={this.onModalTodos}>Mostra todos os avisos</a>
                                     </small>
 
                                 </div>
@@ -188,6 +197,8 @@ class Avisos extends React.Component{
 
                     <ModalAdd ref={this.ModalAdd} />
                     <ModalEdit ref={this.ModalEdit} />
+
+                    <ModalTodos ref={this.ModalTodos} />
 
                 </div>
             </div>

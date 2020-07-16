@@ -9,6 +9,7 @@ import 'moment-timezone';
 import 'moment/locale/pt-br';
 
 import { socket, listarManutencao } from './../Service'
+import { Card, CardBody, CardHeader } from 'reactstrap';
 
 class Manutencao extends React.Component{
     constructor(props){
@@ -39,6 +40,16 @@ class Manutencao extends React.Component{
         this.modal2.current.display(local, nome, id_status, obs, id);
     }
 
+    colorStaus = (status) =>{
+        if(status === 'Em andamento'){
+            return '#17a2b8'
+        }else if(status === 'Concluido'){
+            return '#28a745'
+        }else{
+            return '#6c757d'
+        }
+    }
+
     render(){
         return(
         <div className="home">
@@ -63,38 +74,39 @@ class Manutencao extends React.Component{
                     <div className="col-12">
                         <button className="btn btn-outline-primary" onClick={this.novaManutenção}><i className="icon-plus icons"></i> Nova Manutenção</button>
                     </div>
-                    <div className="col-12" style={{marginTop: 15}}>
-                        <table class="table">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col">Lab</th>
-                                    <th scope="col">Equipamento</th>
-                                    <th scope="col">Descricao</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Data</th>
-                                    <th scope="col">Ação</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {this.state.manutencoes.map((element, index) =>{
-                                    return(
-                                        <tr key={index} style={{backgroundColor : 'white'}}>
-                                            <th scope="row">{element.local}</th>
-                                            <td>{element.nome}</td>
-                                            <td>{element.obs}</td>
-                                            <td>{element.status}</td>
-                                            <td>{moment(element.data_entrada).format('DD/MM/YYYY HH:mm')}</td>
-                                            <td style={{display : 'flex', justifyContent : 'center', cursor : 'pointer'}}>
-                                                <span onClick={() => this.editarManutencao(element.local, element.nome, element.id_status, element.obs, element.id)}>
-                                                    <i className="icon-pencil icons"></i>
+                </div>
+                <div className="row mt-4">
+                    <div className="col-12">
+                        <Card>
+                            <CardHeader>Manutenções realizadas</CardHeader>
+                            <CardBody>
+                                <h5 className="text-muted border-bottom pb-2 mb-3" >Manutenções</h5>
+                                <p>Legenda dos Status : 
+                                    <span class="badge badge-secondary m-1 p-1"> Pendente </span> 
+                                    <span class="badge badge-info m-1 p-1"> Em andamento </span> 
+                                    <span class="badge badge-success m-1 p-1"> Concluido </span> 
+                                    
+                                </p>
+                                
+                                <div className="mt-4">
+                                    {this.state.manutencoes.map((element, index) =>(
+                                        <div className="media text-muted pb-3">
+                                            <svg className="bd-placeholder-img mr-2 rounded" width={32} height={32} xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 32x32"><title>Placeholder</title><rect width="100%" height="100%" fill={this.colorStaus(element.status)} /><text x="50%" y="50%" fill={this.colorStaus(element.status)} dy=".3em">32x32</text></svg>
+                                            <p className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                                                <a href="#" className="float-right" onClick={() => this.editarManutencao(element.local, element.nome, element.id_status, element.obs, element.id)}>
+                                                    Editar
+                                                </a>
+                                                <span className="d-block" >
+                                                    <strong>{!element.local ? 'Fora do Laboratorio' : element.local}</strong> - {element.nome} - {moment(element.data_entrada).format('DD/MM/YYYY HH:mm')}
+                                                
                                                 </span>
-                                            </td>
-                                            
-                                        </tr>
-                                    )
-                                })}                            
-                            </tbody>
-                        </table>
+                                                {element.obs} 
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </CardBody>
+                        </Card>
                     </div>
                 </div>
             </div>

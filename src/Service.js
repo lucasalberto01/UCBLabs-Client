@@ -5,8 +5,8 @@ import { setConnectado, setDesconectado } from '../src/store/actions'
 
 const cookies = new Cookies();
 //const URL = 'http://179.124.185.94:3333'
-//const URL = 'http://191.252.219.159:8080'
-const URL = 'http://localhost:3333'
+const URL = 'http://191.252.219.159:8080'
+//const URL = 'http://localhost:3333'
 
 
 const socket = io(URL);
@@ -72,6 +72,36 @@ function listaLabs(callback){
 }
 function listarTiposLabs(callback){
     axios.post(URL + '/tipos-laboratorios/listar')
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function addTiposLabs(nome, descricao, callback){
+    axios.post(URL + '/tipos-laboratorios/add', { data : { nome, descricao }})
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function editTiposLabs(nome, descricao, id,  callback){
+    axios.post(URL + '/tipos-laboratorios/edit', { data : { nome, descricao, id }})
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function apagarTiposLabs(id,  callback){
+    axios.post(URL + '/tipos-laboratorios/apagar', { data : { id }})
     .then(function(response){
         callback(response.data)
     })
@@ -190,6 +220,13 @@ function listarAlertas(callback){
     })
 }
 
+function listarAlertasDate(date, callback){
+    axios.post(URL + '/avisos/lista', { data : {date}})
+    .then(function(response){
+        callback(response.data)
+    })
+}
+
 function editarAlerta(data, callback){
     axios.post(URL + '/avisos/editar', {data})
     .then(function(response){
@@ -280,6 +317,16 @@ function NovoPedido(data, callback){
 
 function ListarPedidos(id_remetente, callback){
     axios.post(URL + '/pedido/listar_id/' + id_remetente)
+    .then(function(response){
+        callback(response.data)
+    })
+    .catch(function(error){
+        alert(JSON.stringify(error))
+    })
+}
+
+function ListarPedidosData(id_remetente, date, callback){
+    axios.post(URL + '/pedido/listar/data/' + id_remetente, { data : { date }})
     .then(function(response){
         callback(response.data)
     })
@@ -520,10 +567,14 @@ export {
     tiposAlertas,
     salvarAlerta,
     listarAlertas,
+    listarAlertasDate,
     editarAlerta,
     apagarAlerta,
     listarTipoAlerta,
     listarTiposLabs,
+    addTiposLabs,
+    editTiposLabs,
+    apagarTiposLabs,
     ListarDiciplinas,
     editarDisciplinas,
     addDisciplina,
@@ -531,6 +582,7 @@ export {
     NovoPedido,
     ListarPedidos,
     ListarTodosPedidos,
+    ListarPedidosData,
     ExibirDadosPedido,
     CancelarPedido,
     verificaReserva,

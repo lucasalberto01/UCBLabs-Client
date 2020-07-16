@@ -8,6 +8,8 @@
     "@trendmicro/react-datepicker": "^1.0.0-alpha.7",
     "axios": "^0.19.0",
     "bootstrap": "^4.5.0",
+    "html2canvas": "^1.0.0-rc.5",
+    "jspdf": "^1.5.3",
     "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
     "react": "^16.13.1",
