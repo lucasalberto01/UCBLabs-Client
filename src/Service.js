@@ -4,9 +4,7 @@ import io from 'socket.io-client'
 import { setConnectado, setDesconectado } from '../src/store/actions'
 
 const cookies = new Cookies();
-//const URL = 'http://179.124.185.94:3333'
-const URL = 'http://191.252.219.159:8080'
-//const URL = 'http://localhost:3333'
+const URL = 'http://localhost:3333'
 
 
 const socket = io(URL);
