@@ -1,4 +1,7 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# UCB Labs Front-End
+
+Back-end: https://github.com/lucas-alberto98/UCBLabs-Serve
+
 
 ## Available Scripts
 
