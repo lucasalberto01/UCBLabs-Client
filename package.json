@@ -6,7 +6,7 @@
     "@mdi/font": "^5.3.45",
     "@toast-ui/react-calendar": "^1.0.2",
     "@trendmicro/react-datepicker": "^1.0.0-alpha.7",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "bootstrap": "^4.5.0",
     "html2canvas": "^1.0.0-rc.5",
     "jspdf": "^2.3.1",
